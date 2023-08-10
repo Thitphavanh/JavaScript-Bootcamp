@@ -62,3 +62,29 @@ function setUpTime() {
     }
   }, seconds);
 }
+
+function callDataInStore() {
+  if (localStorage.getItem("countDown")) {
+    inputContainer.hidden = true;
+    saveCountDown = JSON.parse(localStorage.getItem("countDown"));
+    countDownTitle = saveCountDown.title;
+    countDownDate = saveCountDown.date;
+    countDownValue = new Date(saveCountDown).getTime();
+    setUpTime();
+  }
+}
+
+function reset() {
+  localStorage.removeItem("countDown");
+  countDownEl.hidden = true;
+  completedEl.hidden = true;
+  inputContainer.hidden = false;
+  clearInterval(countDownActive);
+  countDownTitle = "";
+  countDownDate = "";
+}
+
+callDataInStore();
+
+countDownButtonEl.addEventListener("click", reset);
+completeButtonEl.addEventListener("click", reset);
