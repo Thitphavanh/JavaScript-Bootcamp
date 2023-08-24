@@ -8,10 +8,34 @@ async function getPhotos() {
   try {
     const response = await fetch(apiUrl);
     photoArrays = await response.json();
-    console.log(photoArrays);
+    displayImage();
   } catch (err) {
     console.log(err);
   }
 }
 
+function displayImage() {
+  photoArrays.forEach((photo) => {
+    const item = document.createElement("a");
+    item.setAttribute("href", photo.links.html);
+    item.setAttribute("target", "_blank");
+
+    const img = document.createElement("img");
+    img.setAttribute("src", photo.urls.regular);
+    img.setAttribute("title", photo.alt_description);
+    img.setAttribute("alt", photo.alt_description);
+
+    item.appendChild(img);
+    imageCountainer.appendChild(item);
+  });
+}
 getPhotos();
+
+window.addEventListener("scroll", () => {
+  if (
+    (window.innerHeight = window.screenY >= document.body.offsetHeight - 100)
+  ) {
+    // alert("Get image");
+    getPhotos();
+  }
+});
