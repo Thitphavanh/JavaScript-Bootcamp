@@ -17,12 +17,36 @@ container.addEventListener("click", (e) => {
 
 movieSetelected.addEventListener("change", (e) => {
   price = +e.target.value;
+  setMovieData(e.target.selectedIndex, e.target.value);
   updateSelected();
 });
 
 function updateSelected() {
   const selectedSeats = document.querySelectorAll(".row .seat.selected");
   const countSeats = selectedSeats.length;
+  const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+  localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
   count.innerHTML = countSeats;
   total.innerHTML = countSeats * price;
 }
+
+function setMovieData(movieIndex, moviePrice) {
+  localStorage.setItem("movieIndex", movieIndex);
+  localStorage.setItem("moviePrice", moviePrice);
+}
+
+function showDataToUI() {
+  const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
+  const selectedMovieIndex = localStorage.getItem("movieIndex");
+  seats.forEach((seat, index) => {
+    if (selectedSeats.indexOf(index) > -1) {
+      seat.classList.add("selected");
+    }
+  });
+  if (selectedMovieIndex != null) {
+    movieSetelected.selectedIndex = selectedMovieIndex;
+  }
+}
+
+showDataToUI();
+updateSelected();
