@@ -4,10 +4,16 @@ const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&langu
 const urlPoster = `https://image.tmdb.org/t/p/w500/`;
 
 const content = document.getElementById("content");
+const dropdown = document.getElementById("years");
 
 async function displayMovie(url) {
   const response = await fetch(url);
   const moviesAPI = await response.json();
+
+  while (content.firstChild) {
+    content.removeChild(content.firstChild);
+  }
+
   moviesAPI.results.forEach((data) => {
     const movieElement = document.createElement("div");
     movieElement.classList.add("movie");
@@ -21,4 +27,10 @@ async function displayMovie(url) {
   });
 }
 
+dropdown.addEventListener("change", () => {
+  years = dropdown.value;
+
+  const updateUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&year=${years}`;
+  displayMovie(updateUrl);
+});
 displayMovie(url);
